@@ -67,7 +67,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="5W4-uD-y9W">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="action" id="Was-W9-1da"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="action" id="Was-W9-1da">
+                            <connections>
+                                <action selector="columnChangeAction:" destination="BYZ-38-t0r" id="gJj-2W-JbJ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="hH3-uH-V4P" id="73O-ot-s6Z"/>
