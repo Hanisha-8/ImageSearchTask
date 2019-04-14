@@ -13,12 +13,13 @@ class MainViewController: UIViewController {
     //MARK: Properties
     let cellIdentifier = "imageCellID"
     lazy var searchBar = UISearchBar(frame: CGRect.zero)
-    
+    let searchController = UISearchController(searchResultsController: nil)
+    let searchDefault = "Dog"
     @IBOutlet weak var collectionView: UICollectionView!
     var numberOfColumns = CGFloat(3)
     
     var imageSerachResults = [Photo]()
-     var spinner: UIActivityIndicatorView?
+    var spinner: UIActivityIndicatorView?
     
     private let screenWidth = UIScreen.main.bounds.width
     private let sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -31,18 +32,22 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.titleView = searchController.searchBar
+        searchController.searchBar.delegate = self
+        searchController.becomeFirstResponder()
+        self.definesPresentationContext = true
         
-        searchBar.placeholder = "Image Search"
-        navigationItem.titleView = searchBar
+        // Don't hide the navigation bar because the search bar is in it.
+        searchController.hidesNavigationBarDuringPresentation = false
         
-        fetchImages()
+        fetchImages(searchText: searchDefault)
     }
-
+    
     //MARK: Fetch Images
-    func fetchImages() {
+    func fetchImages(searchText: String) {
         addSpinner()
         DispatchQueue.global().async {[weak self] in
-            self?.viewModel.fetchData({ (result) in
+            self?.viewModel.fetchData(searchText: searchText, { (result) in
                 DispatchQueue.main.async {
                     self?.spinner?.removeFromSuperview()
                     switch result {
@@ -73,7 +78,7 @@ class MainViewController: UIViewController {
         spinner?.startAnimating()
         view.addSubview(spinner!)
     }
-
+    
     
     //MARK: Action
     
@@ -82,14 +87,14 @@ class MainViewController: UIViewController {
         let actionSheet = UIAlertController.init(title: "Please select images to display per row", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         actionSheet.addAction(UIAlertAction.init(title: "2", style: .default, handler: { (action) in
             self.reloadCollectionViewWithSelectedLayout(action.title)
-         }))
+        }))
         actionSheet.addAction(UIAlertAction.init(title: "3", style: .default, handler: { (action) in
             self.reloadCollectionViewWithSelectedLayout(action.title)
         }))
         actionSheet.addAction(UIAlertAction.init(title: "4", style: .default, handler: { (action) in
             self.reloadCollectionViewWithSelectedLayout(action.title)
         }))
-         self.present(actionSheet, animated: true)
+        self.present(actionSheet, animated: true)
     }
     
     func reloadCollectionViewWithSelectedLayout(_ actionTitle: String?) {
@@ -111,12 +116,12 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ImageCollectionViewCell
-        print(imageSerachResults[indexPath.row].url_m)
+        // print(imageSerachResults[indexPath.row].url_m)
         cell.cellImageView = UIImageView.init(image: #imageLiteral(resourceName: "likeL"))
         return cell
     }
     
-
+    
 }
 
 extension MainViewController: UICollectionViewDelegateFlowLayout {
@@ -129,7 +134,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         
         let width = rowContentWidth / CGFloat(numberOfColumns)
         let height = width
-
+        
         
         return CGSize(width: width, height: height)
     }
@@ -146,6 +151,20 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return minimumSpacing
+    }
+    
+}
+
+//MARK: Search Bar
+extension MainViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print(searchBar.text)
+        guard let searchTxt = searchBar.text else {
+            return
+        }
+        fetchImages(searchText: searchTxt)
+        
     }
     
 }

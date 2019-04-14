@@ -12,8 +12,9 @@ class MainViewModel {
     
     let serviceVM = ServiceViewModel.init()
     
-    func fetchData(_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
-        serviceVM.fetchVenueDetails(venueLocations: [:], completion:({ (result) in
+    func fetchData(searchText:String,_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
+
+        serviceVM.fetchImagesDetails(searchText, completion:({ (result) in
             switch result {
             case .success(let response) :
                 guard let photoList = response.photos else {
