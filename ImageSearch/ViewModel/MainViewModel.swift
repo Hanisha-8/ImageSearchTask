@@ -7,3 +7,23 @@
 //
 
 import Foundation
+
+class MainViewModel {
+    
+    let serviceVM = ServiceViewModel.init()
+    
+    func fetchData(_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
+        serviceVM.fetchVenueDetails(venueLocations: [:], completion:({ (result) in
+            switch result {
+            case .success(let response) :
+                guard let photoList = response.photos else {
+                    //completion(.success())
+                    return
+                }
+                completion(.success(photoList))
+            case .failure(let error) :
+                print(error)
+            }
+        })
+        )}
+}
