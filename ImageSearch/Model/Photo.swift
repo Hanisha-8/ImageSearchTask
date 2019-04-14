@@ -7,6 +7,13 @@
 //
 
 import Foundation
+import  UIKit
+
+// This enum contains all the possible states a photo record can be in
+enum PhotoRecordState {
+    case new, downloaded, failed
+}
+
 struct Photo : Codable {
     let id : String?
     let owner : String?
@@ -20,6 +27,14 @@ struct Photo : Codable {
     let url_m : String?
     let height_m : String?
     let width_m : String?
+    
+    //Custom Properties
+    
+    var imageURL: URL?
+    var image: UIImage?
+    var indexPath: IndexPath?
+    var size: String?
+    var state = PhotoRecordState.new
     
     enum CodingKeys: String, CodingKey {
         
@@ -51,6 +66,9 @@ struct Photo : Codable {
         url_m = try values.decodeIfPresent(String.self, forKey: .url_m)
         height_m = try values.decodeIfPresent(String.self, forKey: .height_m)
         width_m = try values.decodeIfPresent(String.self, forKey: .width_m)
+        if url_m != nil {
+            imageURL = URL.init(string: url_m!)
+        }
     }
     
 }

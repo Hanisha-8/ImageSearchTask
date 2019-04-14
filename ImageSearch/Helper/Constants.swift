@@ -16,6 +16,8 @@ import Foundation
 
 let flickAPIURL = "https://api.flickr.com/services/rest/"
 
+typealias ImageDownloadCompletionHandler = (Result<Photo?,ErrorResult>) -> Void
+
 struct FlickrAPIKeys {
     static let searchMethod = "method"
     static let apiKey = "api_key"

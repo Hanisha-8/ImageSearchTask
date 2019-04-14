@@ -35,7 +35,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="123" height="123"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="likeL" translatesAutoresizingMaskIntoConstraints="NO" id="co1-gU-lFB">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="co1-gU-lFB">
                                                     <rect key="frame" x="0.0" y="0.0" width="123" height="123"/>
                                                 </imageView>
                                             </subviews>
@@ -101,6 +101,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="likeL" width="28" height="28"/>
+        <image name="placeholder" width="40" height="40"/>
     </resources>
 </document>

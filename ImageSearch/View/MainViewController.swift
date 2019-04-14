@@ -109,15 +109,13 @@ class MainViewController: UIViewController {
 }
 
 
-extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageSerachResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! ImageCollectionViewCell
-        // print(imageSerachResults[indexPath.row].url_m)
-        cell.cellImageView = UIImageView.init(image: #imageLiteral(resourceName: "likeL"))
         return cell
     }
     
@@ -166,5 +164,38 @@ extension MainViewController: UISearchBarDelegate {
         fetchImages(searchText: searchTxt)
         
     }
+}
+
+extension MainViewController: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        var photoRecord = imageSerachResults[indexPath.row]
+        photoRecord.indexPath = indexPath
+        if photoRecord.image != nil {
+             (cell as! ImageCollectionViewCell).cellImageView.image = photoRecord.image!
+           
+        } else {
+            (cell as! ImageCollectionViewCell).cellImageView.image = #imageLiteral(resourceName: "placeholder")
+            //Only when scrollign is not happening we should start new operations
+            //if !collectionView.isDragging && !collectionView.isDecelerating {
+            ImageDownloadManager.shared.downloadImage(imageDetails: photoRecord)
+            {[weak self] (result) in
+                switch result {
+                case .success(let photoResponse):
+                    guard let photorec = photoResponse else {return }
+                    if let downloadedIndexPath = photorec.indexPath  {
+                        self?.imageSerachResults[downloadedIndexPath.row] = photorec
+                        if  downloadedIndexPath == indexPath {
+                            DispatchQueue.main.async {
+                                (cell as! ImageCollectionViewCell).cellImageView.image = photorec.image
+                            }
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+
+        }
+    }
 }
