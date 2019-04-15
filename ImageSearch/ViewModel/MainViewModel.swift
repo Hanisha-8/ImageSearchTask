@@ -12,9 +12,9 @@ class MainViewModel {
     
     let serviceVM = ServiceViewModel.init()
     
-    func fetchData(searchText:String,_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
+    func fetchData(searchText:String,currentPage: Int?,_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
 
-        serviceVM.fetchImagesDetails(searchText, completion:({ (result) in
+        serviceVM.fetchImagesDetails(searchText, currentPage: currentPage, completion:({ (result) in
             switch result {
             case .success(let response) :
                 guard let photoList = response.photos else {
@@ -24,6 +24,7 @@ class MainViewModel {
                 completion(.success(photoList))
             case .failure(let error) :
                 print(error)
+                 completion(.failure(.network(string: error.localizedDescription)))
             }
         })
         )}

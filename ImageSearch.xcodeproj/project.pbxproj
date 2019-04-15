@@ -24,6 +24,7 @@
 		189E0336226041BC003CE674 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189E0335226041BC003CE674 /* ImageCollectionViewCell.swift */; };
 		18AD79142263A6C50020F989 /* ImageDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD79132263A6C50020F989 /* ImageDownloadManager.swift */; };
 		18AD79162263B3980020F989 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD79152263B3980020F989 /* DownloadOperation.swift */; };
+		18AD7918226424730020F989 /* LoaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */; };
 		DE1307C33B099469D078FFFB /* Pods_ImageSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBEDB30374B62D349001902 /* Pods_ImageSearch.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		189E0335226041BC003CE674 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		18AD79132263A6C50020F989 /* ImageDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadManager.swift; sourceTree = "<group>"; };
 		18AD79152263B3980020F989 /* DownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
+		18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		31B6C7B4CCD10504D1BEE0C7 /* Pods-ImageSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImageSearch/Pods-ImageSearch.debug.xcconfig"; sourceTree = "<group>"; };
 		BF94E358CF86DB9158FC8925 /* Pods-ImageSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImageSearch/Pods-ImageSearch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +132,7 @@
 				189E032022602EC1003CE674 /* MainView.storyboard */,
 				189E031E22602EC1003CE674 /* MainViewController.swift */,
 				189E0335226041BC003CE674 /* ImageCollectionViewCell.swift */,
+				18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				183A9CC722616B7400302415 /* Photos.swift in Sources */,
 				183A9CC322616B6200302415 /* ResponseData.swift in Sources */,
 				183A9CC12261666100302415 /* Connectivity.swift in Sources */,
+				18AD7918226424730020F989 /* LoaderCollectionReusableView.swift in Sources */,
 				183A9CBF226164D900302415 /* Result.swift in Sources */,
 				183A9CBD2261648700302415 /* ServiceViewModel.swift in Sources */,
 				189E033422603125003CE674 /* Constants.swift in Sources */,

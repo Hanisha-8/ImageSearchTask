@@ -26,6 +26,7 @@ struct FlickrAPIKeys {
     static let disableJSONCallback = "nojsoncallback"
     static let safeSearch = "safe_search"
     static let text = "text"
+    static let page = "page"
 }
 
 struct FlickrAPIValues {
@@ -35,4 +36,5 @@ struct FlickrAPIValues {
     static let disableJSONCallback = "1"
     static let mediumURL = "url_m"
     static let safeSearch = "1"
+    static let page = 1
 }

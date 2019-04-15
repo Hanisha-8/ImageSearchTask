@@ -9,11 +9,11 @@
 import Foundation
 
 struct Photos : Codable {
-    let page : Int?
+    var page : Int?
     let pages : Int?
     let perpage : Int?
     let total : String?
-    let photo : [Photo]?
+    var photo : [Photo]?
     
     enum CodingKeys: String, CodingKey {
         

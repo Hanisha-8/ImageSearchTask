@@ -73,6 +73,9 @@ final class ImageDownloadManager {
         }
     }
     
+    func cancelAll() {
+        imageDownloadQueue.cancelAllOperations()
+    }
     
     //MARK: Reduce Priority for offscreen
 }

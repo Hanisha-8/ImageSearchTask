@@ -18,14 +18,16 @@ class ServiceViewModel {
                         FlickrAPIKeys.responseFormat: FlickrAPIValues.responseFormat,
                         FlickrAPIKeys.extras:FlickrAPIValues.mediumURL,
                         FlickrAPIKeys.safeSearch: FlickrAPIValues.safeSearch,
-                        FlickrAPIKeys.disableJSONCallback: FlickrAPIValues.disableJSONCallback]
+                        FlickrAPIKeys.disableJSONCallback: FlickrAPIValues.disableJSONCallback,
+                        FlickrAPIKeys.page: FlickrAPIValues.page] as [String : Any]
     
     
-    func fetchImagesDetails(_ searchText: String,completion: @escaping (Result<ResponseData,ErrorResult>) -> Void) {
+    func fetchImagesDetails(_ searchText: String,currentPage:Int?,completion: @escaping (Result<ResponseData,ErrorResult>) -> Void) {
         if Connectivity.isConnectedToInternet {
             let url = flickAPIURL
             //Make API call with headers, params
             searchParams[FlickrAPIKeys.text] = searchText
+            searchParams[FlickrAPIKeys.page] = currentPage ?? 1
             DispatchQueue.global().async { [unowned self] in
                 Alamofire.request(
                     url,
