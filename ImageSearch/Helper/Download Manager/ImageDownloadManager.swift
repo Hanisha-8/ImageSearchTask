@@ -78,4 +78,13 @@ final class ImageDownloadManager {
     }
     
     //MARK: Reduce Priority for offscreen
+    func reducePriorityForOffScreenCells(_ photorecord: Photo) {
+        guard let imageURL = photorecord.url_m else {
+            return
+        }
+        if let operations = (imageDownloadQueue.operations as? [DownloadOperation])?.filter({$0.photoRecord.id == photorecord.id && $0.isFinished == false && $0.isExecuting == true }), let operation = operations.first {
+            print("Reduce the priority for \(imageURL)")
+            operation.queuePriority = .low
+        }
+    }
 }

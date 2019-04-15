@@ -74,7 +74,7 @@ class MainViewController: UIViewController {
                                     self?.imageSerachResults?.page = response.page
                                 }
                             }
-                            self?.loadMore = self?.isMoreImagesAvilable() ?? false
+                            self?.loadMore = false
                             
                             self?.collectionView.reloadData()
                         
@@ -231,6 +231,7 @@ extension MainViewController: UISearchBarDelegate {
             collectionView.reloadData()
             return
         }
+        loadMore = true
         searchInutText = searchTxt
         searchController.searchBar.text = searchTxt
         fetchImages(searchText: searchTxt,pageNo: defaultPageNo)
@@ -281,10 +282,20 @@ extension MainViewController: UICollectionViewDelegate {
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        /* Reduce the priority of the network operation in case the user scrolls and an image is no longer visible. */
+        if loadMore {
+            return
+        }
+        guard let imageResults = imageSerachResults?.photo else {return}
+        let photorecord = imageResults[indexPath.row]
+        ImageDownloadManager.shared.reducePriorityForOffScreenCells(photorecord)
+    }
+    
     // MARK: - Helper Method
     private func loadMorePhotos() {
         if !searchInutText.isEmpty {
-            if loadMore && isMoreImagesAvilable() {
+            if !loadMore && isMoreImagesAvilable() {
                 loadMore = true
                 guard let currentPage = imageSerachResults?.page else {return}
                 fetchImages(searchText: searchInutText,pageNo: currentPage + 1)
@@ -332,7 +343,8 @@ extension MainViewController: UIScrollViewDelegate {
         pullHeight = CGFloat(round(1000*pullHeight)/1000)
         if pullHeight == 0.0
         {
-            if (self.loaderView?.isCurrentAnimating)! {
+            
+            if let loader = self.loaderView,loader.isCurrentAnimating {
                 print("load more trigger")
                 self.loaderView?.startAnimate()
             }
