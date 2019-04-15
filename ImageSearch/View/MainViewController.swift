@@ -58,7 +58,7 @@ class MainViewController: UIViewController {
                     switch result {
                     case .success(let response):
                         
-                            print("response count: \(response.photo?.count) ")
+                        print("response count: \(String(describing: response.photo?.count)) ")
                             if let page = response.page, page == 1 {
                                 //Its new search so clear previous data if any
                                 ImageDownloadManager.shared.cancelAll()
@@ -69,7 +69,7 @@ class MainViewController: UIViewController {
                                     if var currentResults = self?.imageSerachResults?.photo {
                                         currentResults.append(contentsOf: photoResults)
                                         self?.imageSerachResults?.photo = currentResults
-                                        print("Total loaded image count: \(self?.imageSerachResults?.photo?.count)")
+                                        print("Total loaded image count: \(String(describing: self?.imageSerachResults?.photo?.count))")
                                     }
                                     self?.imageSerachResults?.page = response.page
                                 }
@@ -171,6 +171,20 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         return minimumSpacing
     }
     
+    //MARK: Navigate to Details
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let imageResults = imageSerachResults?.photo else {return}
+        var photoRecord = imageResults[indexPath.row]
+        photoRecord.indexPath = nil
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "MainView", bundle:nil)
+        if let nextViewController = storyBoard.instantiateViewController(withIdentifier: "detailVC") as? DetailViewController {
+            nextViewController.photoRecord = photoRecord
+             self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        
+    }
+    
     //MARK: Add Loader View
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
@@ -184,7 +198,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         if kind == UICollectionView.elementKindSectionFooter {
             let aFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: loaderViewReuseIdentifier, for: indexPath) as! LoaderCollectionReusableView
             self.loaderView = aFooterView
-            self.loaderView?.backgroundColor = UIColor.red
+            self.loaderView?.backgroundColor = UIColor.clear
             return aFooterView
         } else {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: loaderViewReuseIdentifier, for: indexPath)
@@ -313,8 +327,9 @@ extension MainViewController: UIScrollViewDelegate {
         let contentHeight = scrollView.contentSize.height;
         let diffHeight = contentHeight - contentOffset;
         let frameHeight = scrollView.bounds.size.height;
-        let pullHeight  = abs(diffHeight - frameHeight);
+        var pullHeight  = abs(diffHeight - frameHeight);
         print("pullHeight:\(pullHeight)");
+        pullHeight = CGFloat(round(1000*pullHeight)/1000)
         if pullHeight == 0.0
         {
             if (self.loaderView?.isCurrentAnimating)! {

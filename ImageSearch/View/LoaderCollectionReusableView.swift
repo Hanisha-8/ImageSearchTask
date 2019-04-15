@@ -15,7 +15,7 @@ class LoaderCollectionReusableView: UICollectionReusableView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        //refreshIndicator.color = UIColor.red
+        refreshIndicator.color = UIColor.red
         self.prepareInitialAnimation()
     }
     
@@ -53,7 +53,7 @@ class LoaderCollectionReusableView: UICollectionReusableView {
         if isCurrentAnimating {
             return
         }
-        self.isCurrentAnimating = true
+        startAnimate()
         UIView.animate(withDuration: 0.2) {
             self.refreshIndicator?.transform = CGAffineTransform.identity
         }

@@ -98,6 +98,49 @@
             </objects>
             <point key="canvasLocation" x="965.60000000000002" y="771.36431784107947"/>
         </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="NGO-wN-NIz">
+            <objects>
+                <viewController storyboardIdentifier="detailVC" id="8kt-58-WTs" customClass="DetailViewController" customModule="ImageSearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kvV-BZ-jWd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a9m-vG-yts">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YQo-oe-bx2">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="YQo-oe-bx2" firstAttribute="centerX" secondItem="a9m-vG-yts" secondAttribute="centerX" id="Shq-D9-1bH"/>
+                                    <constraint firstAttribute="trailing" secondItem="YQo-oe-bx2" secondAttribute="trailing" id="aSw-AX-hMe"/>
+                                    <constraint firstItem="YQo-oe-bx2" firstAttribute="centerY" secondItem="a9m-vG-yts" secondAttribute="centerY" id="ag9-AT-yXe"/>
+                                    <constraint firstItem="YQo-oe-bx2" firstAttribute="leading" secondItem="a9m-vG-yts" secondAttribute="leading" id="eXC-GH-35p"/>
+                                    <constraint firstItem="YQo-oe-bx2" firstAttribute="top" secondItem="a9m-vG-yts" secondAttribute="top" id="kk9-EM-AGW"/>
+                                    <constraint firstAttribute="bottom" secondItem="YQo-oe-bx2" secondAttribute="bottom" id="v7c-LV-WXd"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wyF-nV-QfX" firstAttribute="trailing" secondItem="a9m-vG-yts" secondAttribute="trailing" id="F9D-h9-ZWb"/>
+                            <constraint firstItem="wyF-nV-QfX" firstAttribute="bottom" secondItem="a9m-vG-yts" secondAttribute="bottom" id="h6b-ox-mYo"/>
+                            <constraint firstItem="a9m-vG-yts" firstAttribute="top" secondItem="wyF-nV-QfX" secondAttribute="top" constant="-20" id="jAq-cO-RCT"/>
+                            <constraint firstItem="a9m-vG-yts" firstAttribute="leading" secondItem="wyF-nV-QfX" secondAttribute="leading" id="suU-vf-B7a"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wyF-nV-QfX"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="YQo-oe-bx2" id="TX3-SX-pLI"/>
+                        <outlet property="scrollView" destination="a9m-vG-yts" id="7TY-cr-esc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hY4-vz-jMf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1829.5999999999999" y="761.46926536731644"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="E1V-qs-SjF">
             <objects>
