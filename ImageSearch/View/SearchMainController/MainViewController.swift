@@ -13,17 +13,24 @@ class MainViewController: UIViewController {
     //MARK: Properties
     let cellIdentifier = "imageCellID"
     let loaderViewReuseIdentifier = "RefreshLoaderView"
+    
+    //Search Bar
     lazy var searchBar = UISearchBar(frame: CGRect.zero)
     let searchController = UISearchController(searchResultsController: nil)
     
-    var searchInutText = "Dog"
+    //Default Values
+    var searchInutText = "Clouds"
     var defaultPageNo = 1
-    @IBOutlet weak var collectionView: UICollectionView!
     var numberOfColumns = CGFloat(3)
     var loadMore: Bool = false
+    
+    //UI Properties
     var imageSerachResults: Photos?
     var spinner: UIActivityIndicatorView?
     var loaderView:LoaderCollectionReusableView?
+    var selectedCell: ImageCollectionViewCell?
+    
+    //Layout Properties
     private let screenWidth = UIScreen.main.bounds.width
     private let sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     private let minimumSpacing = CGFloat(10)
@@ -33,17 +40,25 @@ class MainViewController: UIViewController {
         return vModel
     }()
     
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    
+    //MARK: Init
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Add searchBar as titleView of navigation
         self.navigationItem.titleView = searchController.searchBar
         searchController.searchBar.delegate = self
-       
-        // Don't hide the navigation bar because the search bar is in it.
         searchController.hidesNavigationBarDuringPresentation = false
          self.definesPresentationContext = true
+        
         searchController.searchBar.text = searchInutText
-         searchController.becomeFirstResponder()
+        searchController.becomeFirstResponder()
+        
+        //Register Loader view as supplementary
         collectionView.register(LoaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: loaderViewReuseIdentifier)
+        
+        //Load image with default search on launch
         fetchImages(searchText: searchInutText,pageNo: defaultPageNo)
     }
     
@@ -59,6 +74,7 @@ class MainViewController: UIViewController {
                     case .success(let response):
                         
                         print("response count: \(String(describing: response.photo?.count)) ")
+                        //Reset data on first page load
                             if let page = response.page, page == 1 {
                                 //Its new search so clear previous data if any
                                 ImageDownloadManager.shared.cancelAll()
@@ -75,7 +91,6 @@ class MainViewController: UIViewController {
                                 }
                             }
                             self?.loadMore = false
-                            
                             self?.collectionView.reloadData()
                         
                     case .failure(let error):
@@ -101,7 +116,7 @@ class MainViewController: UIViewController {
     
     
     //MARK: Action
-    
+    //Displaya ction sheet to change layout of collectionView
     @IBAction func columnChangeAction(_ sender: Any) {
         
         let actionSheet = UIAlertController.init(title: "Please select images to display per row", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
@@ -122,13 +137,13 @@ class MainViewController: UIViewController {
             return
         }
         self.numberOfColumns = CGFloat(Int(selectedTitle)!)
-        print("Columns: \(numberOfColumns)")
+        print("Columns Layout Required: \(numberOfColumns)")
         self.collectionView.reloadData()
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
-
+//MARK: CollectionView Data Source
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let photos = imageSerachResults?.photo else {return 0}
@@ -142,23 +157,26 @@ extension MainViewController: UICollectionViewDataSource {
     
 }
 
+ //MARK: Delegates
 extension MainViewController: UICollectionViewDelegateFlowLayout {
-    
-    //MARK: Delegates
+  
+    //Based on selected columns , set width/height of cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let interitemSpacesCount = numberOfColumns - 1
         let interitemSpacingPerRow = minimumSpacing * CGFloat(interitemSpacesCount)
         let rowContentWidth = screenWidth - sectionInset.right - sectionInset.left - interitemSpacingPerRow
-        
         let width = rowContentWidth / CGFloat(numberOfColumns)
         let height = width
-        
-        
-        return CGSize(width: width, height: height)
+         return CGSize(width: width, height: height)
+    }
+    
+    
+    // return the spacing between the cells, headers, and footers. Used a constant for that
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInset
     }
     
     // inter-spacing
-    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -171,16 +189,19 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         return minimumSpacing
     }
     
-    //MARK: Navigate to Details
+    //MARK: Navigate to Details and animate it
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let imageResults = imageSerachResults?.photo else {return}
         var photoRecord = imageResults[indexPath.row]
         photoRecord.indexPath = nil
-        
+        selectedCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+
         let storyBoard : UIStoryboard = UIStoryboard(name: "MainView", bundle:nil)
         if let nextViewController = storyBoard.instantiateViewController(withIdentifier: "detailVC") as? DetailViewController {
+            nextViewController.transitioningDelegate = self
             nextViewController.photoRecord = photoRecord
-             self.navigationController?.pushViewController(nextViewController, animated: true)
+            present(nextViewController, animated: true, completion: nil)
+           //  self.navigationController?.pushViewController(nextViewController, animated: true)
         }
         
     }
@@ -228,6 +249,7 @@ extension MainViewController: UISearchBarDelegate {
             ImageDownloadManager.shared.cancelAll()
             imageSerachResults = nil
             loadMore = false
+            searchController.searchBar.text = ""
             collectionView.reloadData()
             return
         }
@@ -236,6 +258,7 @@ extension MainViewController: UISearchBarDelegate {
         searchController.searchBar.text = searchTxt
         fetchImages(searchText: searchTxt,pageNo: defaultPageNo)
         searchController.isActive = false
+        searchController.searchBar.text = searchTxt
         searchController.searchBar.resignFirstResponder()
     }
 }
@@ -258,7 +281,7 @@ extension MainViewController: UICollectionViewDelegate {
            
         } else {
             (cell as! ImageCollectionViewCell).cellImageView.image = #imageLiteral(resourceName: "placeholder")
-            //Only when scrollign is not happening we should start new operations
+            //Only when scrolling is not happening we should start new operations
             //if !collectionView.isDragging && !collectionView.isDecelerating {
             ImageDownloadManager.shared.downloadImage(imageDetails: photoRecord)
             {[weak self] (result) in
@@ -349,5 +372,23 @@ extension MainViewController: UIScrollViewDelegate {
                 self.loaderView?.startAnimate()
             }
         }
+    }
+}
+
+//MARK: Animate to Detail Screen
+extension MainViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let animator = PresentAnimator()
+        if let selectedCel = selectedCell {
+             animator.originFrame = selectedCel.frame //the selected cell gives us the frame origin for the reveal animation
+        }
+       
+        return animator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let animator = DismissAnimator()
+        return animator
     }
 }

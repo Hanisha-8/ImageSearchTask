@@ -26,6 +26,8 @@
 		18AD79162263B3980020F989 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD79152263B3980020F989 /* DownloadOperation.swift */; };
 		18AD7918226424730020F989 /* LoaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */; };
 		18AD791A226439990020F989 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD7919226439990020F989 /* DetailViewController.swift */; };
+		A0444C3F226484AC001700EC /* PresentAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444C3E226484AC001700EC /* PresentAnimator.swift */; };
+		A0444C412264850D001700EC /* DismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444C402264850D001700EC /* DismissAnimator.swift */; };
 		DE1307C33B099469D078FFFB /* Pods_ImageSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBEDB30374B62D349001902 /* Pods_ImageSearch.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,8 @@
 		18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		18AD7919226439990020F989 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		31B6C7B4CCD10504D1BEE0C7 /* Pods-ImageSearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImageSearch/Pods-ImageSearch.debug.xcconfig"; sourceTree = "<group>"; };
+		A0444C3E226484AC001700EC /* PresentAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentAnimator.swift; sourceTree = "<group>"; };
+		A0444C402264850D001700EC /* DismissAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissAnimator.swift; sourceTree = "<group>"; };
 		BF94E358CF86DB9158FC8925 /* Pods-ImageSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImageSearch/Pods-ImageSearch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,10 +136,9 @@
 			isa = PBXGroup;
 			children = (
 				189E032022602EC1003CE674 /* MainView.storyboard */,
-				189E031E22602EC1003CE674 /* MainViewController.swift */,
-				189E0335226041BC003CE674 /* ImageCollectionViewCell.swift */,
-				18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */,
-				18AD7919226439990020F989 /* DetailViewController.swift */,
+				A0444C442264909A001700EC /* SearchMainController */,
+				A0444C45226490AF001700EC /* DetailView */,
+				A0444C46226490C5001700EC /* Animator */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -168,6 +171,33 @@
 				18AD79152263B3980020F989 /* DownloadOperation.swift */,
 			);
 			path = "Download Manager";
+			sourceTree = "<group>";
+		};
+		A0444C442264909A001700EC /* SearchMainController */ = {
+			isa = PBXGroup;
+			children = (
+				189E031E22602EC1003CE674 /* MainViewController.swift */,
+				189E0335226041BC003CE674 /* ImageCollectionViewCell.swift */,
+				18AD7917226424720020F989 /* LoaderCollectionReusableView.swift */,
+			);
+			path = SearchMainController;
+			sourceTree = "<group>";
+		};
+		A0444C45226490AF001700EC /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				18AD7919226439990020F989 /* DetailViewController.swift */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
+		A0444C46226490C5001700EC /* Animator */ = {
+			isa = PBXGroup;
+			children = (
+				A0444C3E226484AC001700EC /* PresentAnimator.swift */,
+				A0444C402264850D001700EC /* DismissAnimator.swift */,
+			);
+			path = Animator;
 			sourceTree = "<group>";
 		};
 		BEFD1432EAB4F5E9ED0A7FF3 /* Frameworks */ = {
@@ -297,9 +327,11 @@
 				189E0336226041BC003CE674 /* ImageCollectionViewCell.swift in Sources */,
 				183A9CC522616B6B00302415 /* Photo.swift in Sources */,
 				18AD79142263A6C50020F989 /* ImageDownloadManager.swift in Sources */,
+				A0444C412264850D001700EC /* DismissAnimator.swift in Sources */,
 				18AD791A226439990020F989 /* DetailViewController.swift in Sources */,
 				183A9CC722616B7400302415 /* Photos.swift in Sources */,
 				183A9CC322616B6200302415 /* ResponseData.swift in Sources */,
+				A0444C3F226484AC001700EC /* PresentAnimator.swift in Sources */,
 				183A9CC12261666100302415 /* Connectivity.swift in Sources */,
 				18AD7918226424730020F989 /* LoaderCollectionReusableView.swift in Sources */,
 				183A9CBF226164D900302415 /* Result.swift in Sources */,
@@ -455,6 +487,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9C773V3CGS;
 				INFOPLIST_FILE = ImageSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -474,6 +507,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9C773V3CGS;
 				INFOPLIST_FILE = ImageSearch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

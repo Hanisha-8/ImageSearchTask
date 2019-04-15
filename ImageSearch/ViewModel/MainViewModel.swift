@@ -12,8 +12,9 @@ class MainViewModel {
     
     let serviceVM = ServiceViewModel.init()
     
+    //MARK: Fetch image based on search text and paging
     func fetchData(searchText:String,currentPage: Int?,_ completion: @escaping (Result<Photos,ErrorResult>) -> Void){
-
+        
         serviceVM.fetchImagesDetails(searchText, currentPage: currentPage, completion:({ (result) in
             switch result {
             case .success(let response) :
@@ -23,8 +24,7 @@ class MainViewModel {
                 }
                 completion(.success(photoList))
             case .failure(let error) :
-                print(error)
-                 completion(.failure(.network(string: error.localizedDescription)))
+                completion(.failure(.network(string: error.localizedDescription)))
             }
         })
         )}

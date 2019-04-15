@@ -10,11 +10,13 @@ import UIKit
 
 class DetailViewController: UIViewController,UIScrollViewDelegate {
     
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
     var photoRecord: Photo?
     var spinner: UIActivityIndicatorView?
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var imageView: UIImageView!
+
+    //MARK: View Load
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 1.0
@@ -23,6 +25,7 @@ class DetailViewController: UIViewController,UIScrollViewDelegate {
         fetchImage()
     }
     
+    //MARK: Download Image
     func fetchImage() {
         guard var photoRec = photoRecord else {return}
         photoRec.indexPath = nil
@@ -61,5 +64,10 @@ class DetailViewController: UIViewController,UIScrollViewDelegate {
             return view as! UIImageView
         }
         return nil
+    }
+    
+    
+    @IBAction func backButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
 }

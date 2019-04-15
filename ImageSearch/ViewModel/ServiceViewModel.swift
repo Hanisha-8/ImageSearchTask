@@ -22,9 +22,12 @@ class ServiceViewModel {
                         FlickrAPIKeys.page: FlickrAPIValues.page] as [String : Any]
     
     
+    //MARK: Fetch image based on search text and paging using Alamofire
     func fetchImagesDetails(_ searchText: String,currentPage:Int?,completion: @escaping (Result<ResponseData,ErrorResult>) -> Void) {
+        
         if Connectivity.isConnectedToInternet {
             let url = flickAPIURL
+            
             //Make API call with headers, params
             searchParams[FlickrAPIKeys.text] = searchText
             searchParams[FlickrAPIKeys.page] = currentPage ?? 1
@@ -36,7 +39,9 @@ class ServiceViewModel {
                     encoding: URLEncoding(destination: .queryString),
                     headers: nil).responseJSON {
                         (responseData) -> Void in
+                        
                         print(responseData.request)
+                        
                         //Parse response data received from service
                         switch(responseData.result) {
                             

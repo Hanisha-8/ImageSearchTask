@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 class DownloadOperation: Operation {
-   
+    
     var photoRecord: Photo
     var downloadHandler: ImageDownloadCompletionHandler?
-  
+    
     init(_ photoRecord: Photo) {
         self.photoRecord = photoRecord
     }
@@ -61,23 +61,22 @@ class DownloadOperation: Operation {
     }
     
     //MARK: Main
-    
-    override func main() {
-        
+     override func main() {
         if isCancelled {
             finish(true)
             return
         }
         self.executing(true)
-        
-       downloadImageFromURL()
+         downloadImageFromURL()
     }
     
+    //MARK: Download using URLSession
     func downloadImageFromURL() {
-
+        
         guard let imageURL = photoRecord.imageURL else { return }
         let request = URLRequest(url: imageURL)
-//         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        //         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         let downloadTask = URLSession(configuration: .default).downloadTask(with: request) {[weak self]
             (data, response, error) in
             if error != nil {
@@ -88,14 +87,14 @@ class DownloadOperation: Operation {
             if let data = data, let imageData = try? Data(contentsOf: data) {
                 cachedPhoto?.image = UIImage(data:imageData)
                 //cachedPhoto?.state = .downloaded
-                 self?.downloadHandler?(.success(cachedPhoto))
+                self?.downloadHandler?(.success(cachedPhoto))
             }
             self?.finish(true)
             self?.executing(false)
-           
+            
         }
         downloadTask.resume()
- 
+        
     }
-
+    
 }

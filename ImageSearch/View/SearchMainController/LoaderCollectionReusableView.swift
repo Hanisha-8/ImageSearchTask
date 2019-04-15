@@ -9,10 +9,14 @@
 import UIKit
 
 class LoaderCollectionReusableView: UICollectionReusableView {
-    @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
+    
+    //MARK: Properties
     var isCurrentAnimating:Bool = false
     var currentTransform:CGAffineTransform?
     
+    @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
+
+    //MARK: Init
     override func awakeFromNib() {
         super.awakeFromNib()
         refreshIndicator.color = UIColor.red
